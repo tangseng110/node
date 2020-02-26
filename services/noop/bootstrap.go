@@ -45,4 +45,14 @@ func Bootstrap() {
 			return method, err
 		},
 	)
+
+	market.RegisterPaymentMethodUnserializer(
+		"PER_TIME", // TODO remove this old payment method. Keeping this only to allow connecting to old nodes.
+		func(rawDefinition *json.RawMessage) (market.PaymentMethod, error) {
+			var method pingpong.PaymentMethod
+			err := json.Unmarshal(*rawDefinition, &method)
+
+			return method, err
+		},
+	)
 }
