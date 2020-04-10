@@ -28,6 +28,7 @@ import (
 	"github.com/mysteriumnetwork/node/market"
 	"github.com/mysteriumnetwork/node/services"
 	"github.com/mysteriumnetwork/node/session/pingpong"
+	"github.com/mysteriumnetwork/node/tequilapi/contract"
 	"github.com/mysteriumnetwork/node/tequilapi/utils"
 	"github.com/mysteriumnetwork/node/tequilapi/validation"
 	"github.com/rs/zerolog/log"
@@ -87,7 +88,7 @@ type serviceInfo struct {
 	// example: Running
 	Status string `json:"status"`
 
-	Proposal proposalDTO `json:"proposal"`
+	Proposal contract.ProposalDTO `json:"proposal"`
 
 	AccessPolicies *[]market.AccessPolicy `json:"access_policies,omitempty"`
 }
@@ -350,7 +351,7 @@ func toServiceInfoResponse(id service.ID, instance *service.Instance) serviceInf
 		Type:       proposal.ServiceType,
 		Options:    instance.Options(),
 		Status:     string(instance.State()),
-		Proposal:   *proposalToRes(instance.Proposal()),
+		Proposal:   *contract.NewProposalDTO(instance.Proposal()),
 	}
 }
 
