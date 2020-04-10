@@ -22,7 +22,7 @@ require (
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.4.0
 	github.com/gofrs/uuid v3.2.0+incompatible
-	github.com/golang/protobuf v1.4.0-rc.4
+	github.com/golang/protobuf v1.4.0
 	github.com/huin/goupnp v1.0.0
 	github.com/jackpal/gateway v1.0.5
 	github.com/jackpal/go-nat-pmp v1.0.2 // indirect
@@ -40,7 +40,7 @@ require (
 	github.com/mysteriumnetwork/go-dvpn-web v0.0.36
 	github.com/mysteriumnetwork/go-openvpn v0.0.22
 	github.com/mysteriumnetwork/go-wondershaper v1.0.1
-	github.com/mysteriumnetwork/metrics v0.0.0-20191002053948-084a00d6c6b2
+	github.com/mysteriumnetwork/metrics v0.0.3
 	github.com/mysteriumnetwork/payments v0.0.11
 	github.com/nats-io/gnatsd v1.4.1 // indirect
 	github.com/nats-io/go-nats v1.4.0
@@ -72,7 +72,7 @@ require (
 	golang.org/x/sys v0.0.0-20200413165638-669c56c373c4
 	golang.zx2c4.com/wireguard v0.0.20200320
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200324154536-ceff61240acf
-	google.golang.org/protobuf v1.20.1
+	google.golang.org/protobuf v1.21.0
 	gopkg.in/src-d/go-git.v4 v4.13.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
