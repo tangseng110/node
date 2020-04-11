@@ -18,6 +18,8 @@
 package contract
 
 import (
+	"fmt"
+
 	"github.com/mysteriumnetwork/node/core/quality"
 	"github.com/mysteriumnetwork/node/market"
 	"github.com/mysteriumnetwork/node/money"
@@ -78,6 +80,10 @@ type ProposalDTO struct {
 
 	// PaymentMethod
 	PaymentMethod PaymentMethodDTO `json:"payment_method"`
+}
+
+func (p ProposalDTO) String() string {
+	return fmt.Sprintf("Id: %d , Provider: %s, Country: %s", p.ID, p.ProviderID, p.ServiceDefinition.LocationOriginate.Country)
 }
 
 // ServiceDefinitionDTO holds specific service details.

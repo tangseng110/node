@@ -45,6 +45,7 @@ import (
 	wireguard_service "github.com/mysteriumnetwork/node/services/wireguard/service"
 	"github.com/mysteriumnetwork/node/session/pingpong"
 	tequilapi_client "github.com/mysteriumnetwork/node/tequilapi/client"
+	"github.com/mysteriumnetwork/node/tequilapi/contract"
 	"github.com/mysteriumnetwork/node/utils"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -95,7 +96,7 @@ func describeQuit(err error) error {
 type cliApp struct {
 	historyFile      string
 	tequilapi        *tequilapi_client.Client
-	fetchedProposals []tequilapi_client.ProposalDTO
+	fetchedProposals []contract.ProposalDTO
 	completer        *readline.PrefixCompleter
 	reader           *readline.Instance
 
@@ -351,7 +352,7 @@ func (c *cliApp) connect(argsString string) {
 		}
 	}
 
-	connectOptions := tequilapi_client.ConnectOptions{
+	connectOptions := contract.ConnectOptions{
 		DNS:               dns,
 		DisableKillSwitch: disableKillSwitch,
 	}
@@ -513,8 +514,10 @@ func (c *cliApp) proposals(filter string) {
 		}
 
 		var policies []string
-		for _, policy := range proposal.AccessPolicies {
-			policies = append(policies, policy.ID)
+		if proposal.AccessPolicies != nil {
+			for _, policy := range *proposal.AccessPolicies {
+				policies = append(policies, policy.ID)
+			}
 		}
 
 		msg := fmt.Sprintf("- provider id: %v\ttype: %v\tcountry: %v\taccess policies: %v", proposal.ProviderID, proposal.ServiceType, country, strings.Join(policies, ","))
@@ -528,7 +531,7 @@ func (c *cliApp) proposals(filter string) {
 	}
 }
 
-func (c *cliApp) fetchProposals() []tequilapi_client.ProposalDTO {
+func (c *cliApp) fetchProposals() []contract.ProposalDTO {
 	upperTimeBound := config.GetUInt64(config.FlagPaymentsConsumerPricePerMinuteUpperBound)
 	lowerTimeBound := config.GetUInt64(config.FlagPaymentsConsumerPricePerMinuteLowerBound)
 	upperGBBound := config.GetUInt64(config.FlagPaymentsConsumerPricePerGBUpperBound)
@@ -536,7 +539,7 @@ func (c *cliApp) fetchProposals() []tequilapi_client.ProposalDTO {
 	proposals, err := c.tequilapi.ProposalsByPrice(lowerTimeBound, upperTimeBound, lowerGBBound, upperGBBound)
 	if err != nil {
 		warn(err)
-		return []tequilapi_client.ProposalDTO{}
+		return []contract.ProposalDTO{}
 	}
 	return proposals
 }
@@ -600,7 +603,7 @@ func getIdentityOptionList(tequilapi *tequilapi_client.Client) func(string) []st
 	}
 }
 
-func getProposalOptionList(proposals []tequilapi_client.ProposalDTO) func(string) []string {
+func getProposalOptionList(proposals []contract.ProposalDTO) func(string) []string {
 	return func(line string) []string {
 		var providerIDS []string
 		for _, proposal := range proposals {
@@ -610,7 +613,7 @@ func getProposalOptionList(proposals []tequilapi_client.ProposalDTO) func(string
 	}
 }
 
-func newAutocompleter(tequilapi *tequilapi_client.Client, proposals []tequilapi_client.ProposalDTO) *readline.PrefixCompleter {
+func newAutocompleter(tequilapi *tequilapi_client.Client, proposals []contract.ProposalDTO) *readline.PrefixCompleter {
 	connectOpts := []readline.PrefixCompleterInterface{
 		readline.PcItem("dns=auto"),
 		readline.PcItem("dns=provider"),
