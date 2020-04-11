@@ -56,7 +56,7 @@ type serviceRequest struct {
 	AccessPolicies accessPoliciesRequest `json:"access_policies"`
 
 	// PaymentMethod describes payment options that should be used for service creation.
-	PaymentMethod paymentMethodRes `json:"payment_method"`
+	PaymentMethod contract.PaymentMethodDTO `json:"payment_method"`
 }
 
 // accessPolicy represents the access controls
@@ -290,11 +290,11 @@ func AddRoutesForService(router *httprouter.Router, serviceManager ServiceManage
 
 func (se *ServiceEndpoint) toServiceRequest(req *http.Request) (serviceRequest, error) {
 	jsonData := struct {
-		ProviderID     string                `json:"provider_id"`
-		Type           string                `json:"type"`
-		Options        *json.RawMessage      `json:"options"`
-		AccessPolicies accessPoliciesRequest `json:"access_policies"`
-		PaymentMethod  paymentMethodRes      `json:"payment_method"`
+		ProviderID     string                    `json:"provider_id"`
+		Type           string                    `json:"type"`
+		Options        *json.RawMessage          `json:"options"`
+		AccessPolicies accessPoliciesRequest     `json:"access_policies"`
+		PaymentMethod  contract.PaymentMethodDTO `json:"payment_method"`
 	}{
 		AccessPolicies: accessPoliciesRequest{
 			Ids: services.SharedConfiguredOptions().AccessPolicyList,
