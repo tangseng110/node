@@ -32,7 +32,6 @@ import (
 	"github.com/mysteriumnetwork/node/services/openvpn"
 	"github.com/mysteriumnetwork/node/tequilapi/contract"
 	"github.com/mysteriumnetwork/node/tequilapi/utils"
-	"github.com/mysteriumnetwork/node/tequilapi/validation"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 )
@@ -272,18 +271,4 @@ func toConnectionRequest(req *http.Request) (*contract.ConnectionCreateRequest, 
 		return nil, err
 	}
 	return &connectionRequest, nil
-}
-
-func validateConnectionRequest(cr *contract.ConnectionCreateRequest) *validation.FieldErrorMap {
-	errs := validation.NewErrorMap()
-	if len(cr.ConsumerID) == 0 {
-		errs.ForField("consumer_id").AddError("required", "Field is required")
-	}
-	if len(cr.ProviderID) == 0 {
-		errs.ForField("provider_id").AddError("required", "Field is required")
-	}
-	if len(cr.AccountantID) == 0 {
-		errs.ForField("accountant_id").AddError("required", "Field is required")
-	}
-	return errs
 }
